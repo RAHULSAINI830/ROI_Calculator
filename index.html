@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zentrades ROI Calculator</title>
+    <style>
+        .ztrades-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .ztrades-calculator {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .ztrades-inputs, .ztrades-results-container {
+            width: 48%;
+        }
+
+        .ztrades-inputs h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .ztrades-inputs p {
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .ztrades-input-group {
+            margin-bottom: 20px;
+            padding: 13px 16px;
+            border-radius: 4px;
+            border: 1px solid var(--n300);
+            width: 100%;
+            color: var(--n900);
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px;
+        }
+
+        .ztrades-input-group label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        #ztrades-pricePerJob, #ztrades-advertisingSpend {
+            padding: 13px 16px;
+            border-radius: 4px;
+            width: 100%;
+            color: var(--n900);
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px;
+            border: 1px solid #ddd;
+            outline: none;
+            box-shadow: none;
+        }
+
+        .ztrades-slider-container {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .ztrades-slider-container input[type="range"] {
+            -webkit-appearance: none;
+            width: 70%;
+            height: 8px;
+            background: linear-gradient(to right, #ee5566 0%, #ee5566 var(--value), #e0e0e0 var(--value), #e0e0e0 100%);
+            border-radius: 5px;
+            outline: none;
+            margin-right: 10px;
+            transition: background 0.3s;
+        }
+
+        .ztrades-slider-container input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #ee5566;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .ztrades-slider-container input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #ee5566;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .ztrades-slider-container input[type="range"]:active {
+            background: linear-gradient(to right, #ee5566 0%, #ee5566 var(--value), #e0e0e0 var(--value), #e0e0e0 100%);
+        }
+
+        .ztrades-slider-container input[type="range"]::-ms-fill-lower {
+            background: #ee5566;
+        }
+
+        .ztrades-slider-container input[type="range"]::-ms-fill-upper {
+            background: #e0e0e0;
+        }
+
+        .ztrades-input-number {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            width: 120px;
+            height: 40px;
+            font-family: Arial, sans-serif;
+        }
+
+        .ztrades-input-number button {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 40px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            color: #333;
+            width: 40px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .ztrades-input-number input {
+            width: 65px;
+            text-align: center;
+            border: none;
+            outline: none;
+            font-size: 18px;
+            background-color: #fff;
+        }
+
+        .ztrades-input-pair {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .ztrades-input-pair .ztrades-input-group {
+            flex: 1;
+        }
+
+        .ztrades-input-pair .ztrades-input-group:not(:last-child) {
+            margin-right: 10px;
+        }
+
+        .ztrades-results-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ztrades-initial-view {
+            background-color: #FFBFC6;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            height: 100%;
+        }
+
+        .ztrades-icon-container {
+            margin-bottom: 20px;
+        }
+
+        .ztrades-icon {
+            width: 100px;
+            height: auto;
+        }
+
+        .ztrades-results {
+            background-color: #FFBFC6;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 90%;
+            opacity: 0;
+            visibility: hidden;
+            transition: top 0.5s ease, opacity 0.5s ease;
+        }
+
+        .ztrades-results.show {
+            top: 0;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .ztrades-roi-display h2 {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .ztrades-roi-display p {
+            font-size: 20px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .ztrades-result-group {
+            margin-top: 20px;
+            text-align: left;
+            padding: 10px 0;
+            border-top: 1px solid #faa1ab;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .ztrades-result-group p {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .ztrades-special-group {
+            background-color: #ff94a0;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #FFBFC6;
+            margin-top: 20px;
+        }
+
+        .ztrades-icon {
+            margin-right: 5px;
+        }
+
+        .ztrades-btn-primary, .ztrades-btn-secondary {
+            background-color: #ee5566;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            padding: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .ztrades-btn-primary:hover {
+            background-color: #d54758;
+        }
+
+        .ztrades-btn-secondary {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            color: #333;
+            padding: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        #ztrades-timeBetween, #ztrades-dealSize {
+            padding: 13px 16px;
+            border-radius: 4px;
+            width: 100%;
+            color: var(--n900);
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px;
+        }
+
+        .ztrades-btn-secondary:hover {
+            background-color: #f3f3f3;
+        }
+
+        @media (max-width: 768px) {
+            .ztrades-calculator {
+                flex-direction: column;
+            }
+
+            .ztrades-inputs, .ztrades-results-container {
+                width: 100%;
+            }
+
+            .ztrades-input-pair {
+                flex-direction: column;
+            }
+
+            .ztrades-input-pair .ztrades-input-group:not(:last-child) {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .ztrades-results {
+                width: 90%;
+            }
+        }
+
+        /* Mobile view (480px and below) */
+        @media (max-width: 480px) {
+            .ztrades-container {
+                padding: 10px;
+            }
+
+            .ztrades-calculator {
+                flex-direction: column;
+            }
+
+            .ztrades-inputs, .ztrades-results-container {
+                width: 100%;
+            }
+
+            .ztrades-results {
+                width: 100%;
+                left: 0;
+                padding: 20px 10px;
+                box-sizing: border-box;
+            }
+
+            .ztrades-inputs h1 {
+                font-size: 20px;
+            }
+
+            .ztrades-input-group {
+                padding: 10px;
+            }
+
+            .ztrades-input-number {
+                width: 100px;
+                height: 35px;
+            }
+
+            .ztrades-input-number button {
+                font-size: 16px;
+                width: 30px;
+                height: 35px;
+            }
+
+            .ztrades-input-number input {
+                font-size: 16px;
+                width: 40px;
+            }
+
+            #ztrades-pricePerJob, #ztrades-advertisingSpend {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .ztrades-roi-display h2 {
+                font-size: 28px;
+            }
+
+            .ztrades-roi-display p {
+                font-size: 16px;
+            }
+
+            .ztrades-result-group {
+                font-size: 16px;
+            }
+
+            .ztrades-btn-primary, .ztrades-btn-secondary {
+                padding: 12px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ztrades-container">
+        <div class="ztrades-calculator">
+            <!-- Left Side: Input Fields -->
+            <div class="ztrades-inputs">
+                <h1>Zentrades ROI Calculator</h1>
+                <p>It only takes 20 seconds to get your results</p>
+
+                <div class="ztrades-input-group">
+                    <label for="ztrades-totalRevenue"><b>Total Revenue from Jobs ($)</b></label>
+                    <div class="ztrades-slider-container">
+                        <input type="range" id="ztrades-totalRevenue" min="10000" max="1000000" step="1000" value="100000" oninput="updateValue(this, 'ztrades-totalRevenueValue')">
+                        <div class="ztrades-input-number" data-slider-id="ztrades-totalRevenue" data-input-id="ztrades-totalRevenueValue">
+                            <button type="button" class="ztrades-decrement-button">-</button>
+                            <input type="number" id="ztrades-totalRevenueValue" min="10000" max="1000000" step="1000" value="100000">
+                            <button type="button" class="ztrades-increment-button">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ztrades-input-group">
+                    <label for="ztrades-totalCost"><b>Total Cost of Inspections ($)</b></label>
+                    <div class="ztrades-slider-container">
+                        <input type="range" id="ztrades-totalCost" min="1000" max="100000" step="500" value="20000" oninput="updateValue(this, 'ztrades-totalCostValue')">
+                        <div class="ztrades-input-number" data-slider-id="ztrades-totalCost" data-input-id="ztrades-totalCostValue">
+                            <button type="button" class="ztrades-decrement-button">-</button>
+                            <input type="number" id="ztrades-totalCostValue" min="1000" max="100000" step="500" value="20000">
+                            <button type="button" class="ztrades-increment-button">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ztrades-input-group">
+                    <label for="ztrades-conversionRate"><b>Estimates Conversion Rate (%)</b></label>
+                    <div class="ztrades-slider-container">
+                        <input type="range" id="ztrades-conversionRate" min="1" max="100" step="1" value="30" oninput="updateValue(this, 'ztrades-conversionRateValue')">
+                        <div class="ztrades-input-number" data-slider-id="ztrades-conversionRate" data-input-id="ztrades-conversionRateValue">
+                            <button type="button" class="ztrades-decrement-button">-</button>
+                            <input type="number" id="ztrades-conversionRateValue" min="1" max="100" step="1" value="30">
+                            <button type="button" class="ztrades-increment-button">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ztrades-input-pair">
+                    <div class="ztrades-input-group">
+                        <label for="ztrades-timeBetween"><b>Time Between Inspection (Days)</b></label>
+                        <input type="number" id="ztrades-timeBetween" min="0" step="1" value="10" oninput="calculateROI()">
+                    </div>
+
+                    <div class="ztrades-input-group">
+                        <label for="ztrades-dealSize"><b>Average Deal Size ($)</b></label>
+                        <input type="number" id="ztrades-dealSize" min="1" max="1000000" step="100" value="5000" oninput="calculateROI()">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: ROI Results -->
+            <div class="ztrades-results-container">
+                <!-- Initial View -->
+                <div id="ztrades-initialView" class="ztrades-initial-view">
+                    <div class="ztrades-icon-container">
+                        <img src="https://resources.zentrades.pro/wp-content/uploads/2024/08/Untitled-design-6.webp" alt="ROI Icon" class="ztrades-icon">
+                    </div>
+                    <h2>What is ROI?</h2>
+                    <p>ROI, or Return on Investment, is a useful tool for assessing the profitability or success of your business, typically measured monetarily, but it can also evaluate the ‘cost’ of time invested.</p>
+                    <button id="ztrades-calculateNowButton" class="ztrades-btn-primary">Calculate now</button>
+                </div>
+
+                <!-- Results View -->
+                <div id="ztrades-resultsView" class="ztrades-results">
+                    <div class="ztrades-roi-display">
+                        <h2 id="ztrades-roiPercentage">0%</h2>
+                        <p>ROI with Zentrades 🚀</p>
+                    </div>
+
+                    <div class="ztrades-result-group">
+                        <p><strong>Zentrades Cost:</strong> <span id="ztrades-totalCostResult">$0.00/day</span></p>
+                        <p><strong>Zentrades Return:</strong> <span id="ztrades-totalRevenueResult">$0.00/day</span></p>
+                    </div>
+
+                    <div class="ztrades-result-group ztrades-special-group">
+                        <p><span class="ztrades-icon">📈</span> Conversion Rate: <span id="ztrades-conversionRateResult">0%</span></p>
+                        <p><span class="ztrades-icon">✅</span> Adjusted ROI: <span id="ztrades-adjustedROI">0%</span></p>
+                    </div>
+
+                    <button id="ztrades-freeTrialButton" class="ztrades-btn-primary">Try Zentrades for free</button>
+                    <button id="ztrades-recalculateButton" class="ztrades-btn-secondary">Re-calculate</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Function to update slider background based on the slider's value
+        function updateSliderBackground(slider) {
+            const percentage = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
+            slider.style.background = `linear-gradient(to right, #ee5566 0%, #ee5566 ${percentage}%, #e0e0e0 ${percentage}%, #e0e0e0 100%)`;
+        }
+
+        // Function to synchronize slider and number input values
+        function syncSliderAndInput(sliderId, inputId) {
+            const slider = document.getElementById(sliderId);
+            const input = document.getElementById(inputId);
+
+            // Update number input when slider changes
+            slider.addEventListener('input', () => {
+                input.value = slider.value;
+                updateSliderBackground(slider);
+                calculateROI();
+            });
+
+            // Update slider when number input changes
+            input.addEventListener('input', () => {
+                let value = parseFloat(input.value);
+
+                // Validate input value
+                if (isNaN(value)) value = slider.min;
+                if (value < slider.min) value = slider.min;
+                if (value > slider.max) value = slider.max;
+
+                input.value = value;
+                slider.value = value;
+                updateSliderBackground(slider);
+                calculateROI();
+            });
+        }
+
+        // Function to increment slider and input value
+        function incrementValue(sliderId, inputId) {
+            const slider = document.getElementById(sliderId);
+            const input = document.getElementById(inputId);
+            let value = parseFloat(slider.value);
+
+            if (value < slider.max) {
+                value += parseFloat(slider.step) || 1;
+                value = Math.min(value, slider.max);
+                slider.value = value;
+                input.value = value;
+                updateSliderBackground(slider);
+                calculateROI();
+            }
+        }
+
+        // Function to decrement slider and input value
+        function decrementValue(sliderId, inputId) {
+            const slider = document.getElementById(sliderId);
+            const input = document.getElementById(inputId);
+            let value = parseFloat(slider.value);
+
+            if (value > slider.min) {
+                value -= parseFloat(slider.step) || 1;
+                value = Math.max(value, slider.min);
+                slider.value = value;
+                input.value = value;
+                updateSliderBackground(slider);
+                calculateROI();
+            }
+        }
+
+        // Function to calculate ROI using the provided formula
+        function calculateROI() {
+            // Get the input values
+            const totalRevenue = parseFloat(document.getElementById('ztrades-totalRevenue').value) || 0;
+            const totalCost = parseFloat(document.getElementById('ztrades-totalCost').value) || 0;
+            const conversionRate = parseFloat(document.getElementById('ztrades-conversionRate').value) / 100 || 0;
+            const timeBetween = parseFloat(document.getElementById('ztrades-timeBetween').value) || 0;
+            const dealSize = parseFloat(document.getElementById('ztrades-dealSize').value) || 1; // Prevent division by zero
+
+            // Prevent invalid calculations
+            if (totalCost === 0 || dealSize <= timeBetween) {
+                document.getElementById('ztrades-roiPercentage').innerText = 'N/A';
+                document.getElementById('ztrades-totalRevenueResult').innerText = '$0.00';
+                document.getElementById('ztrades-totalCostResult').innerText = '$0.00';
+                document.getElementById('ztrades-conversionRateResult').innerText = '0%';
+                document.getElementById('ztrades-adjustedROI').innerText = 'N/A';
+                return;
+            }
+
+            // ROI Calculation as per provided formula
+            const roi = (totalRevenue / totalCost) * (conversionRate / (1 - (timeBetween / dealSize))) * 100;
+
+            // Update the results in the UI
+            document.getElementById('ztrades-roiPercentage').innerText = roi.toFixed(1) + '%';
+            document.getElementById('ztrades-totalRevenueResult').innerText = '$' + totalRevenue.toFixed(2);
+            document.getElementById('ztrades-totalCostResult').innerText = '$' + totalCost.toFixed(2);
+            document.getElementById('ztrades-conversionRateResult').innerText = (conversionRate * 100).toFixed(1) + '%';
+            document.getElementById('ztrades-adjustedROI').innerText = roi.toFixed(1) + '%';
+        }
+
+        // Initialize sliders and inputs on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Synchronize sliders and inputs
+            syncSliderAndInput('ztrades-totalRevenue', 'ztrades-totalRevenueValue');
+            syncSliderAndInput('ztrades-totalCost', 'ztrades-totalCostValue');
+            syncSliderAndInput('ztrades-conversionRate', 'ztrades-conversionRateValue');
+
+            // Initialize slider backgrounds
+            document.querySelectorAll('input[type="range"]').forEach(slider => {
+                updateSliderBackground(slider);
+            });
+
+            // Add event listeners for increment and decrement buttons
+            document.querySelectorAll('.ztrades-input-number').forEach(container => {
+                const sliderId = container.getAttribute('data-slider-id');
+                const inputId = container.getAttribute('data-input-id');
+
+                container.querySelector('.ztrades-increment-button').addEventListener('click', () => {
+                    incrementValue(sliderId, inputId);
+                });
+
+                container.querySelector('.ztrades-decrement-button').addEventListener('click', () => {
+                    decrementValue(sliderId, inputId);
+                });
+            });
+
+            // Add event listeners for ztrades-timeBetween and ztrades-dealSize inputs
+            ['ztrades-timeBetween', 'ztrades-dealSize'].forEach(id => {
+                const input = document.getElementById(id);
+                input.addEventListener('input', () => {
+                    let value = parseFloat(input.value);
+
+                    // Validate input value
+                    if (isNaN(value) || value < parseFloat(input.min)) value = parseFloat(input.min);
+                    if (value > parseFloat(input.max)) value = parseFloat(input.max);
+
+                    input.value = value;
+                    calculateROI();
+                });
+            });
+
+            // Calculate ROI initially
+            calculateROI();
+
+            // Handle calculate now button click
+            document.getElementById('ztrades-calculateNowButton').addEventListener('click', () => {
+                const initialView = document.getElementById('ztrades-initialView');
+                const resultsView = document.getElementById('ztrades-resultsView');
+
+                // Hide initial view
+                initialView.style.opacity = '0';
+                initialView.style.visibility = 'hidden';
+
+                // Show results view with animation
+                setTimeout(() => {
+                    resultsView.style.opacity = '1';
+                    resultsView.style.top = '0';
+                    resultsView.style.visibility = 'visible';
+                }, 500); // Ensure there's a delay for smooth transition
+            });
+
+            // Handle re-calculate button click
+            document.getElementById('ztrades-recalculateButton').addEventListener('click', () => {
+                const initialView = document.getElementById('ztrades-initialView');
+                const resultsView = document.getElementById('ztrades-resultsView');
+
+                // Hide results view
+                resultsView.style.opacity = '0';
+                resultsView.style.visibility = 'hidden';
+
+                // Show initial view with animation
+                setTimeout(() => {
+                    initialView.style.opacity = '1';
+                    initialView.style.visibility = 'visible';
+                }, 500); // Ensure there's a delay for smooth transition
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,398 @@
+
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 1000px;
+    width: 100%;
+   
+}
+
+.calculator {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    
+}
+
+.inputs, .results-container {
+    width: 48%;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+p {
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    padding: 13px 16px;
+    border-radius: 4px;
+    border: 1px solid var(--n300);
+    width: 100%;
+    color: var(--n900);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+#pricePerJob, #advertisingSpend {
+    padding: 13px 16px;
+    border-radius: 4px;
+    width: 100%;
+    color: var(--n900);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    border: 1px solid #ddd;
+    outline: none;
+    box-shadow: none;
+}
+
+.slider-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.slider-container input[type="range"] {
+    -webkit-appearance: none;
+    width: 70%;
+    height: 8px;
+    background: linear-gradient(to right, #ee5566 0%, #ee5566 var(--value), #e0e0e0 var(--value), #e0e0e0 100%);
+    border-radius: 5px;
+    outline: none;
+    margin-right: 10px;
+    transition: background 0.3s;
+}
+
+.slider-container input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #ee5566;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.slider-container input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #ee5566;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.slider-container input[type="range"]:active {
+    background: linear-gradient(to right, #ee5566 0%, #ee5566 var(--value), #e0e0e0 var(--value), #e0e0e0 100%);
+}
+
+.slider-container input[type="range"]::-ms-fill-lower {
+    background: #ee5566;
+}
+
+.slider-container input[type="range"]::-ms-fill-upper {
+    background: #e0e0e0;
+}
+
+.input-number {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 120px;
+    height: 40px;
+    font-family: Arial, sans-serif;
+}
+
+.input-number button {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 40px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #333;
+    width: 40px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.input-number input {
+    width: 65px;
+    text-align: center;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    background-color: #fff;
+}
+
+.input-pair {
+    display: flex;
+    justify-content: space-between;
+}
+
+.input-pair .input-group {
+    flex: 1;
+}
+
+.input-pair .input-group:not(:last-child) {
+    margin-right: 10px;
+}
+
+.results-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.initial-view {
+    background-color: #FFBFC6;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 100%;
+}
+
+.icon-container {
+    margin-bottom: 20px;
+}
+
+.icon {
+    width: 100px;
+    height: auto;
+}
+
+.results {
+    background-color: #FFBFC6;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 90%;
+    opacity: 0;
+    visibility: hidden;
+    transition: top 0.5s ease, opacity 0.5s ease;
+}
+
+.results.show {
+    top: 0;
+    opacity: 1;
+    visibility: visible;
+}
+
+.roi-display h2 {
+    font-size: 36px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.roi-display p {
+    font-size: 20px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.result-group {
+    margin-top: 20px;
+    text-align: left;
+    padding: 10px 0;
+    border-top: 1px solid #faa1ab;
+    font-size: 18px;
+    color: #333;
+}
+
+.result-group p {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.special-group {
+    background-color: #ff94a0;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #FFBFC6;
+    margin-top: 20px;
+}
+
+.icon {
+    margin-right: 5px;
+}
+
+.btn-primary, .btn-secondary {
+    background-color: #ee5566;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    padding: 15px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: #d54758;
+}
+
+.btn-secondary {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    color: #333;
+    padding: 15px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+    font-weight: bold;
+}
+#timeBetween{
+    padding: 13px 16px;
+    border-radius: 4px;
+   
+    width: 100%;
+    color: var(--n900);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+#dealSize{
+    padding: 13px 16px;
+    border-radius: 4px;
+    width: 100%;
+    color: var(--n900);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.btn-secondary:hover {
+    background-color: #f3f3f3;
+}
+
+@media (max-width: 768px) {
+    .calculator {
+        flex-direction: column;
+    }
+
+    .inputs, .results-container {
+        width: 100%;
+    }
+
+    .input-pair {
+        flex-direction: column;
+    }
+
+    .input-pair .input-group:not(:last-child) {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .results {
+        width: 90%;
+        
+    }
+}
+
+/* Mobile view (480px and below) */
+/* Mobile view (480px and below) */
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+
+    .calculator {
+        flex-direction: column;
+    }
+
+    .inputs, .results-container {
+        width: 100%;
+    }
+
+    .results {
+        width: 100%;
+        left: 0;
+        padding: 20px 10px;  /* Adjust padding for better fit on mobile screens */
+        box-sizing: border-box; /* Ensure padding is included in element's total width */
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    .input-group {
+        padding: 10px;
+    }
+
+    .input-number {
+        width: 100px;
+        height: 35px;
+    }
+
+    .input-number button {
+        font-size: 16px;
+        width: 30px;
+        height: 35px;
+    }
+
+    .input-number input {
+        font-size: 16px;
+        width: 40px;
+    }
+
+    #pricePerJob, #advertisingSpend {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .roi-display h2 {
+        font-size: 28px;
+    }
+
+    .roi-display p {
+        font-size: 16px;
+    }
+
+    .result-group {
+        font-size: 16px;
+    }
+
+    .btn-primary, .btn-secondary {
+        padding: 12px;
+        font-size: 14px;
+    }
+}

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://zentrades.pro/wp-content/uploads/custom-css-js/45318.css" >
+</head>
+
+
+<body class="zfr-unique-2024-body-abc123">
+    <div class="zfr-unique-2024-container-abc123">
+        <div class="zfr-unique-2024-main-content-abc123">
+            <div class="zfr-unique-2024-left-sections-abc123">
+                <div class="zfr-unique-2024-full-width-question-abc123">
+                    <div class="zfr-unique-2024-question-abc123">
+                        <p>What is the average number of inspections you do per month?</p>
+                        <div class="zfr-unique-2024-input-group-abc123 zfr-unique-2024-number-input-abc123">
+                            <button id="zfr-unique-2024-decrease-inspections-abc123">-</button>
+                            <input type="number" id="zfr-unique-2024-number-no-inspections-abc123" min="0" max="999" value="0" />
+                            <button id="zfr-unique-2024-increase-inspections-abc123">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="zfr-unique-2024-section-abc123">
+                    <div class="zfr-unique-2024-subsection-abc123">
+                        <div class="zfr-unique-2024-question-abc123">
+                            <p>Total estimates/proposals from inspections? <br><br></p>
+                            <div class="zfr-unique-2024-input-group-abc123">
+                                <div class="zfr-unique-2024-range-value-abc123" id="zfr-unique-2024-value-no-est-abc123">0</div>
+                                <input type="range" id="zfr-unique-2024-range-no-est-abc123" min="0" max="40" value="0" />
+                                <div class="zfr-unique-2024-range-labels-abc123"><span>0</span><span id="zfr-unique-2024-label-max-no-est-abc123">40</span></div>
+                            </div>
+                        </div>
+                        <div class="zfr-unique-2024-question-abc123">
+                            <p>Gap between inspection and estimate (days)?
+                                <br><br></p>
+                            <div class="zfr-unique-2024-input-group-abc123">
+                                <div class="zfr-unique-2024-range-value-abc123" id="zfr-unique-2024-value-time-before-estimate-abc123">0</div>
+                                <input type="range" id="zfr-unique-2024-range-time-before-estimate-abc123" min="0" max="30" value="0" />
+                                <div class="zfr-unique-2024-range-labels-abc123"><span>0</span><span>30</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="zfr-unique-2024-subsection-abc123">
+                        <div class="zfr-unique-2024-question-abc123">
+                            <p>Average deal size ($) per estimate? <br><br></p>
+                            <div class="zfr-unique-2024-input-group-abc123">
+                                <div class="zfr-unique-2024-range-value-abc123" id="zfr-unique-2024-value-deal-size-abc123">0</div>
+                                <input type="range" id="zfr-unique-2024-range-deal-size-abc123" min="500" max="50000" step="500" value="0" />
+                                <div class="zfr-unique-2024-range-labels-abc123"><span>500</span><span>50000</span></div>
+                            </div>
+                        </div>
+                        <div class="zfr-unique-2024-question-abc123">
+                            <p>Percentage of estimates converting to jobs/projects ? <br><br></p>
+                            <div class="zfr-unique-2024-input-group-abc123">
+                                <div class="zfr-unique-2024-range-value-abc123" id="zfr-unique-2024-value-conv-ratio-abc123">0</div>
+                                <input type="range" id="zfr-unique-2024-range-conv-ratio-abc123" min="0" max="100" value="0" />
+                                <div class="zfr-unique-2024-range-labels-abc123"><span>0</span><span>100</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="zfr-unique-2024-result-section-abc123">
+                <div class="zfr-unique-2024-result-abc123">
+                    <h4 id="zfr-unique-2024-extra-revenue-abc123"> $0.00<span class="zfr-unique-2024-small-text-abc123">/month</span></h4>
+                </div>
+                <div class="zfr-unique-2024-additional-result-abc123">
+                    <div class="zfr-unique-2024-header-abc123">
+                        <h4>Increase with</h4>
+                        <img src="https://zentrades.pro/wp-content/uploads/2024/04/ZenFire-Black.svg" alt="Logo" class="zfr-unique-2024-logo-abc123" />
+                    </div>
+                    <h4 id="zfr-unique-2024-extra-revenue-zentrades-abc123">$0.00</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+         $(document).ready(function () {
+            function updateRangeValue(rangeInput, valueDisplay) {
+                var $rangeInput = $(rangeInput);
+                var $valueDisplay = $(valueDisplay);
+                var value = $rangeInput.val();
+                $valueDisplay.text(value);
+                var percent = (value - $rangeInput.attr('min')) / ($rangeInput.attr('max') - $rangeInput.attr('min')) * 100;
+                $valueDisplay.css('left', `calc(${percent}% + (${8 - percent * 0.15}px))`);
+
+                $rangeInput.on('input', function () {
+                    value = $(this).val();
+                    $valueDisplay.text(value);
+                    percent = (value - $(this).attr('min')) / ($(this).attr('max')) * 100;
+                    $valueDisplay.css('left', `calc(${percent}% + (${8 - percent * 0.15}px))`);
+                    calculateRevenue();
+                });
+            }
+
+            function calculateRevenue() {
+                var inspectionsPerMonth = parseFloat($("#zfr-unique-2024-number-no-inspections-abc123").val());
+                var estimatesPerMonth = parseFloat($("#zfr-unique-2024-range-no-est-abc123").val());
+                var gapDays = parseFloat($("#zfr-unique-2024-range-time-before-estimate-abc123").val());
+                var averageDealSize = parseFloat($("#zfr-unique-2024-range-deal-size-abc123").val());
+                var conversionRatio = parseFloat($("#zfr-unique-2024-range-conv-ratio-abc123").val()) / 100;
+
+                // New ROI Calculation
+                var totalRevenueFromJobs = 100000; // Assuming fixed value
+                var totalCostOfInspections = 20000; // Assuming fixed value
+
+                var roi = (totalRevenueFromJobs / totalCostOfInspections) *
+                    (conversionRatio / (1 - (gapDays / averageDealSize)));
+
+                // Update the display with the calculated ROI
+                $("#zfr-unique-2024-extra-revenue-abc123").html("ROI " + roi.toFixed(2) + '<span class="zfr-unique-2024-small-text-abc123">%</span>');
+
+                // Calculate the increase with ZenFire
+                var roiWithZenFire = roi * 1.8;
+                $("#zfr-unique-2024-extra-revenue-zentrades-abc123").html("ROI " + roiWithZenFire.toFixed(2) + '<span class="zfr-unique-2024-small-text-abc123">%</span>');
+            }
+
+            updateRangeValue('#zfr-unique-2024-range-no-est-abc123', '#zfr-unique-2024-value-no-est-abc123');
+            updateRangeValue('#zfr-unique-2024-range-time-before-estimate-abc123', '#zfr-unique-2024-value-time-before-estimate-abc123');
+            updateRangeValue('#zfr-unique-2024-range-deal-size-abc123', '#zfr-unique-2024-value-deal-size-abc123');
+            updateRangeValue('#zfr-unique-2024-range-conv-ratio-abc123', '#zfr-unique-2024-value-conv-ratio-abc123');
+
+            $('#zfr-unique-2024-decrease-inspections-abc123').on('click', function () {
+                var currentValue = parseFloat($('#zfr-unique-2024-number-no-inspections-abc123').val());
+                if (currentValue > 0) {
+                    $('#zfr-unique-2024-number-no-inspections-abc123').val(currentValue - 1).trigger('input');
+                }
+            });
+
+            $('#zfr-unique-2024-increase-inspections-abc123').on('click', function () {
+                var currentValue = parseFloat($('#zfr-unique-2024-number-no-inspections-abc123').val());
+                var maxValue = parseFloat($('#zfr-unique-2024-number-no-inspections-abc123').attr('max'));
+                if (currentValue < maxValue) {
+                    $('#zfr-unique-2024-number-no-inspections-abc123').val(currentValue + 1).trigger('input');
+                }
+            });
+
+            $('#zfr-unique-2024-number-no-inspections-abc123').on('input', function () {
+                var value = parseFloat($(this).val());
+                if (value < 0) {
+                    $(this).val(0);
+                } else if (value > 999) {
+                    $(this).val(999);
+                }
+                var maxInspections = parseFloat($(this).val());
+                $('#zfr-unique-2024-range-no-est-abc123').attr('max', maxInspections);
+                $('#zfr-unique-2024-label-max-no-est-abc123').text(maxInspections);
+                if (parseFloat($('#zfr-unique-2024-range-no-est-abc123').val()) > maxInspections) {
+                    $('#zfr-unique-2024-range-no-est-abc123').val(maxInspections).trigger('input');
+                }
+                calculateRevenue();
+            });
+
+            $('#zfr-unique-2024-number-no-inspections-abc123').trigger('input');
+            $('#zfr-unique-2024-range-no-est-abc123').trigger('input');
+            $('#zfr-unique-2024-range-time-before-estimate-abc123').trigger('input');
+            $('#zfr-unique-2024-range-deal-size-abc123').trigger('input');
+            $('#zfr-unique-2024-range-conv-ratio-abc123').trigger('input');
+
+            calculateRevenue();
+        });
+    </script>
+    
+</body>
+
+</html>
